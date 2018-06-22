@@ -8,8 +8,8 @@ itoa = (num) ->
     table.concat [string.char band (math.floor num / (2^i)), 0xff for i = 56, 0, -8], ""
 
 
-hmac = (seed, step) ->
-    sha1.hmac seed, itoa step
+hmac = (key, counter) ->
+    sha1.hmac key, itoa counter
 
 
 --------------------------------------------------------------------------------

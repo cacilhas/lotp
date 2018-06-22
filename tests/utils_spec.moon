@@ -13,14 +13,14 @@ TestUtilsItoa =
         ["11595967340110342682"]: "\160\237&\219\150N\221\221"
 
     populate: =>
-        for val, exp in pairs @specs
-            @["test_#{val}"] = => unit.assertEquals (utils.itoa (0+val)), exp
+        for counter, exp in pairs @specs
+            @["test_#{counter}"] = => unit.assertEquals (utils.itoa (0+counter)), exp
 
 TestUtilsItoa\populate!
 
 
 TestUtilsHMAC =
-    seed: "12345678901234567890"
+    key: "12345678901234567890"
 
     specs:
            [0]: "cc93cf18508d94934c64b65d8ba7667fb7cde4b0"
@@ -35,7 +35,7 @@ TestUtilsHMAC =
            [9]: "1637409809a679dc698207310c8c7fc07290d9e5"
 
     populate: =>
-        for val, exp in pairs @specs
-            @["test_#{val}"] = => unit.assertEquals (utils.hmac @seed, val), exp
+        for counter, exp in pairs @specs
+            @["test_#{counter}"] = => unit.assertEquals (utils.hmac @key, counter), exp
 
 TestUtilsHMAC\populate!

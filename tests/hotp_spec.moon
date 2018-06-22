@@ -20,7 +20,7 @@ TestHOTP =
         [9]: 520489
 
     populate: =>
-        for val, exp in pairs @specs
-            @["test_#{val}"] = => unit.assertEquals (hotp @seed, val), exp
+        for step, exp in pairs @specs
+            @["test_#{step}"] = => unit.assertEquals (hotp @seed, step), exp
 
 TestHOTP\populate!

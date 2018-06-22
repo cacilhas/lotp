@@ -22,7 +22,7 @@ TestHOTP =
     populate: =>
         for step, exp in pairs @specs
             @["test_password_#{step}"] = => unit.assertEquals (@hotp\password step), exp
-            @["test_digest_#{step}"] = => unit.assertTrue (@hotp\digest exp, step)
+            @["test_digest_#{step}"] = => unit.assertTrue @hotp\digest exp, step
 
     test_progression: =>
         @hotp.currentstep = 0

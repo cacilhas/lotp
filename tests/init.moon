@@ -7,9 +7,14 @@ lfs = assert require "lfs"
 
 
 --------------------------------------------------------------------------------
-for dirent in lfs.dir "tests"
-    (assert loadfile"tests/#{dirent}")! if (dirent\match ".-_spec%.moon")
+loaddir = (dirname) ->
+    for dirent in lfs.dir dirname
+        unless dirent\find "^%."
+            name = "#{dirname}/#{dirent}"
+            (assert loadfile name)! if (dirent\match ".-_spec%.moon")
+            loaddir name if (lfs.attributes name).mode == "directory"
 
+loaddir "tests"
 
 --------------------------------------------------------------------------------
 os.exit unit.LuaUnit.run!

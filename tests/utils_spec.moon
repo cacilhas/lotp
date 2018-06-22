@@ -14,7 +14,8 @@ TestUtilsItoa =
 
     populate: =>
         for counter, exp in pairs @specs
-            @["test_#{counter}"] = => unit.assertEquals (utils.itoa (0+counter)), exp
+            @["test_#{counter}"] = =>
+                unit.assertEquals (utils.itoa tonumber counter), exp
 
 TestUtilsItoa\populate!
 
@@ -39,3 +40,62 @@ TestUtilsHMAC =
             @["test_#{counter}"] = => unit.assertEquals (utils.hmac @key, counter), exp
 
 TestUtilsHMAC\populate!
+
+
+TestUtilsUnixTime =
+    now:
+        year: 2018
+        month: 6
+        day: 22
+        hour: 12
+        min: 0
+        sec: 37
+
+    test_utc_now: =>
+        args = {}
+        res = nil
+        os.date = with os.date
+            os.date = (fmt, t) ->
+                args.fmt = fmt
+                args.t = t
+                @now
+            res = utils.unixtime!
+
+        unit.assertEquals res, os.time @now
+        unit.assertEquals args.fmt, "!*t"
+        unit.assertNil args.t
+
+    test_utc_some_time: =>
+        args = {}
+        res = nil
+        os.date = with os.date
+            os.date = (fmt, t) ->
+                args.fmt = fmt
+                args.t = t
+                @now
+            res = utils.unixtime 12345
+
+        unit.assertEquals res, os.time @now
+        unit.assertEquals args.fmt, "!*t"
+        unit.assertEquals args.t, 12345
+
+
+TestUtilsCicles =
+    now:
+        year: 2018
+        month: 6
+        day: 22
+        hour: 12
+        min: 0
+        sec: 37
+
+    test_unix_epoch: =>
+        epoch = os.time os.date "!*t", 0
+        unit.assertEquals (utils.cicles 30, -epoch), 0
+
+    test_now: =>
+        res = nil
+        os.date = with os.date
+            os.date = -> @now
+            res = utils.cicles 30
+        unit.assertEquals res, 50989321

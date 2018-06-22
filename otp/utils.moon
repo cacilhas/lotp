@@ -11,6 +11,11 @@ itoa = (num) ->
 hmac = (key, counter) ->
     sha1.hmac key, itoa counter
 
+unixtime = => os.time os.date "!*t", @
+
+cicles = (interval, t) ->
+    math.floor (unixtime t) / interval
+
 
 --------------------------------------------------------------------------------
-:hmac, :itoa
+:cicles, :hmac, :itoa, :unixtime

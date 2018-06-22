@@ -8,10 +8,7 @@ lfs = assert require "lfs"
 
 --------------------------------------------------------------------------------
 for dirent in lfs.dir "tests"
-    if (dirent\match ".-_spec%.moon")
-        f, err = loadfile"tests/#{dirent}"
-        error err unless f
-        f!
+    (assert loadfile"tests/#{dirent}")! if (dirent\match ".-_spec%.moon")
 
 
 --------------------------------------------------------------------------------

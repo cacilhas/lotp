@@ -42,45 +42,15 @@ TestUtilsHMAC =
 TestUtilsHMAC\populate!
 
 
-TestUtilsUnixTime =
-    now:
-        year: 2018
-        month: 6
-        day: 22
-        hour: 12
-        min: 0
-        sec: 37
-
-    test_utc_now: =>
-        args = {}
-        res = nil
-        os.date = with os.date
-            os.date = (fmt, t) ->
-                args.fmt = fmt
-                args.t = t
-                @now
-            res = utils.unixtime!
-
-        unit.assertEquals res, os.time @now
-        unit.assertEquals args.fmt, "!*t"
-        unit.assertNil args.t
-
-    test_utc_some_time: =>
-        args = {}
-        res = nil
-        os.date = with os.date
-            os.date = (fmt, t) ->
-                args.fmt = fmt
-                args.t = t
-                @now
-            res = utils.unixtime 12345
-
-        unit.assertEquals res, os.time @now
-        unit.assertEquals args.fmt, "!*t"
-        unit.assertEquals args.t, 12345
-
-
 TestUtilsCicles =
+    epoch:
+        year: 1970
+        month: 1
+        day: 1
+        hour: 0
+        min: 0
+        sec: 0
+
     now:
         year: 2018
         month: 6
@@ -90,12 +60,15 @@ TestUtilsCicles =
         sec: 37
 
     test_unix_epoch: =>
-        epoch = os.time os.date "!*t", 0
-        unit.assertEquals (utils.cicles 30, -epoch), 0
+        unit.assertEquals (utils.cicles 30, @epoch), 0
 
     test_now: =>
+        args = {}
         res = nil
         os.date = with os.date
-            os.date = -> @now
+            os.date = (fmt) ->
+                args.fmt = fmt
+                @now
             res = utils.cicles 30
-        unit.assertEquals res, 50989321
+        unit.assertEquals res, 50988961
+

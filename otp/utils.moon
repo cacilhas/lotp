@@ -11,10 +11,12 @@ itoa = (num) ->
 hmac = (key, counter) ->
     sha1.hmac key, itoa counter
 
-unixtime = => os.time os.date "!*t", @
+
+epoch = os.time os.date "!*t", 0
 
 cicles = (interval, t) ->
-    math.floor (unixtime t) / interval
+    t or= os.date "!*t"
+    math.floor ((os.time t) - epoch) / interval
 
 
 --------------------------------------------------------------------------------

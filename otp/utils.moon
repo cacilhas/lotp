@@ -12,5 +12,12 @@ hmac = (key, counter) ->
     sha1.hmac key, itoa counter
 
 
+epoch = os.time os.date "!*t", 0
+
+cicles = (interval, t) ->
+    t or= os.date "!*t"
+    math.floor ((os.time t) - epoch) / interval
+
+
 --------------------------------------------------------------------------------
-:hmac, :itoa
+:cicles, :hmac, :itoa, :unixtime

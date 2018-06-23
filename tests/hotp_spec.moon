@@ -2,10 +2,10 @@ export ^
 local *
 
 unit = assert require "luaunit"
-hotp = assert require "otp.hotp"
+HOTP = assert require "otp.hotp"
 
 TestHOTP =
-    seed: "12345678901234567890"
+    hotp: HOTP "12345678901234567890"
 
     specs:
         [0]: 755224
@@ -21,6 +21,12 @@ TestHOTP =
 
     populate: =>
         for step, exp in pairs @specs
-            @["test_#{step}"] = => unit.assertEquals (hotp @seed, step), exp
+            @["test_password_#{step}"] = => unit.assertEquals (@hotp\password step), exp
+            @["test_digest_#{step}"] = => unit.assertTrue @hotp\digest exp, step
+
+    test_progression: =>
+        @hotp.currentstep = 0
+        unit.assertTrue @hotp\digest @specs[0]
+        unit.assertTrue @hotp\digest exp for _, exp in ipairs @specs
 
 TestHOTP\populate!

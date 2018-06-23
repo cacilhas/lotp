@@ -14,7 +14,8 @@ TestUtilsItoa =
 
     populate: =>
         for counter, exp in pairs @specs
-            @["test_#{counter}"] = => unit.assertEquals (utils.itoa (0+counter)), exp
+            @["test_#{counter}"] = =>
+                unit.assertEquals (utils.itoa tonumber counter), exp
 
 TestUtilsItoa\populate!
 
@@ -39,3 +40,35 @@ TestUtilsHMAC =
             @["test_#{counter}"] = => unit.assertEquals (utils.hmac @key, counter), exp
 
 TestUtilsHMAC\populate!
+
+
+TestUtilsCicles =
+    epoch:
+        year: 1970
+        month: 1
+        day: 1
+        hour: 0
+        min: 0
+        sec: 0
+
+    now:
+        year: 2018
+        month: 6
+        day: 22
+        hour: 12
+        min: 0
+        sec: 37
+
+    test_unix_epoch: =>
+        unit.assertEquals (utils.cicles 30, @epoch), 0
+
+    test_now: =>
+        args = {}
+        res = nil
+        os.date = with os.date
+            os.date = (fmt) ->
+                args.fmt = fmt
+                @now
+            res = utils.cicles 30
+        unit.assertEquals res, 50988961
+

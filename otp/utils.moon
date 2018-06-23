@@ -20,4 +20,4 @@ cicles = (interval, t) ->
 
 
 --------------------------------------------------------------------------------
-:cicles, :hmac, :itoa, :unixtime
+:cicles, :hmac, :itoa

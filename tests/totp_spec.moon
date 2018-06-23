@@ -27,12 +27,12 @@ TestTOTP =
             @["test_password #{name}"] = => unit.assertEquals (@totp\password t), exp
             @["test_digest #{name}"] = => unit.assertTrue @totp\digest exp, t
 
-    skip_test_last_post: =>
+    test_last_post: =>
         @totp.last = 1
         @totp.post = 1
         t = {year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 29}
         unit.assertFalse @totp\digest 48150727, t  -- 1m before
-        unit.assertTrue  @totp\digest 44266759, t  -- 30s before
+        unit.assertTrue  @totp\digest 89731029, t  -- 30s before
         unit.assertTrue  @totp\digest  7081804, t  -- t itself
         unit.assertTrue  @totp\digest 14050471, t  -- 30s after
         unit.assertFalse @totp\digest 44266759, t  -- 1m after

@@ -13,7 +13,7 @@ describe "otp", ->
 
             for counter, cipher in pairs specs
                 it "should translate #{counter} to #{cipher}", ->
-                    assert.are.equal (utils.itoa tonumber counter), cipher
+                    assert.are.equal cipher, utils.itoa tonumber counter
 
         describe "hmac", ->
             key = "12345678901234567890"
@@ -32,4 +32,4 @@ describe "otp", ->
 
             for counter, cipher in pairs specs
                 it "should generate #{cipher} for #{counter}", ->
-                    assert.are.equal (utils.hmac key, counter), cipher
+                    assert.are.equal cipher, utils.hmac key, counter

@@ -23,7 +23,7 @@ describe "otp", ->
         describe "#password", ->
             for step, code in pairs specs
                 it "should respond #{code} for #{step}", ->
-                    assert.are.equal (hotp\password step), code
+                    assert.are.equal code, hotp\password step
 
         describe "#digest", ->
             for step, code in pairs specs

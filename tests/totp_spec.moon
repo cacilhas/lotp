@@ -23,7 +23,7 @@ describe "otp", ->
             for t, code in pairs specs
                 name = os.date "%Y-%m-%d %H:%M:%S", os.time t
                 it "should responde #{code} for #{name}", ->
-                    assert.are.equal (totp\password t), code
+                    assert.are.equal code, totp\password t
 
             it "should use current UTC date/time by default", ->
                 s = spy.on os, "date"

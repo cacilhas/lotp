@@ -1,6 +1,6 @@
 MOON := moon
 MOONC := moonc
-BUSTED := env LUA_PATH="?.lua;?/init.lua;$(LUA_PATH)" busted --lazy
+BUSTED := busted
 SHARE_DIR := $(shell $(MOON) find-lua-path.moon)
 
 DEST= $(SHARE_DIR)/otp
@@ -34,5 +34,5 @@ clean:
 	$(RM) $(TARGET) $(HEADERS_DIR)
 
 
-test: tests $(TARGET)
-	@$(BUSTED) $<
+test: $(TARGET)
+	@$(BUSTED)

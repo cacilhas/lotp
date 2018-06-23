@@ -1,0 +1,7 @@
+return {
+  default = {
+    ROOT = {"tests"},
+    lazy = true,
+    lpath = "?.lua;?/init.lua;" .. package.path,
+  },
+}

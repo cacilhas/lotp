@@ -9,6 +9,13 @@ cicles = (interval, t) ->
     math.floor ((os.time t) - epoch) / interval
 
 
+if _TEST
+    -- For test purpose
+    _G.otp or= {}
+    otp._test or= {}
+    otp._test.totp = :cicles
+
+
 --------------------------------------------------------------------------------
 class TOTP
     interval: 30
@@ -28,8 +35,3 @@ class TOTP
         step = cicles @interval, t
         @hotp.length = @length if @length
         @hotp\password step
-
-
-with TOTP
-    -- For test purpose
-    ._test = :cicles if _TEST

@@ -5,12 +5,8 @@ describe "otp", ->
     local HOTP, _test
 
     setup ->
-        _G._TEST = true
         HOTP = assert require "otp.hotp"
-        import _test from HOTP
-
-    teardown ->
-        _G._TEST = nil
+        _test = otp._test.hotp
 
     describe "_internals", ->
         describe "itoa", ->

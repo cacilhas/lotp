@@ -1,8 +1,7 @@
-_G.TEST = true
-
 return {
   default = {
     ROOT = {"tests"},
+    helper = "tests/init.moon",
     lazy = true,
     lpath = "?.lua;?/init.lua;" .. package.path,
     shuffle = true,

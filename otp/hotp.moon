@@ -13,6 +13,13 @@ hmac = (key, counter) ->
     sha1.hmac key, itoa counter
 
 
+if _TEST
+    -- For test purpose
+    _G.otp or= {}
+    otp._test or= {}
+    otp._test.hotp = :hmac, :itoa
+
+
 --------------------------------------------------------------------------------
 class HOTP
     length: 6
@@ -32,8 +39,3 @@ class HOTP
         phrase = phrase\sub dt+1, dt+8
         num = band (tonumber phrase, 16), 0x7fffffff
         num % (10 ^ @length)
-
-
-with HOTP
-    -- For test purpose
-    ._test = :itoa, :hmac if _TEST

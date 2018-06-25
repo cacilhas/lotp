@@ -5,12 +5,8 @@ describe "otp", ->
     local TOTP, _test
 
     setup ->
-        _G._TEST = true
         TOTP = assert require "otp.totp"
-        _test = TOTP._test
-
-    teardown ->
-        _G._TEST = nil
+        _test = otp._test.totp
 
     describe "_internals", ->
         specs =

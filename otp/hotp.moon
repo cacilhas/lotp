@@ -2,7 +2,7 @@ local *
 
 sha1 = assert require"sha1",
     "missing: luarocks install sha1 # git@github.com:kikito/sha1.lua.git"
-import band from assert require "bit"
+import band from assert require"bit", "require LuaJIT"
 
 
 itoa = (num) ->

@@ -1,11 +1,17 @@
 local *
 
-_G._TEST = true
-HOTP = assert require "otp.hotp"
-import _test from HOTP
-
 
 describe "otp", ->
+    local HOTP, _test
+
+    setup ->
+        _G._TEST = true
+        HOTP = assert require "otp.hotp"
+        import _test from HOTP
+
+    teardown ->
+        _G._TEST = nil
+
     describe "_internals", ->
         describe "itoa", ->
             specs =
@@ -37,7 +43,7 @@ describe "otp", ->
                 it "should generate #{cipher} for #{counter}", ->
                     assert.are.equal cipher, _test.hmac key, counter
 
-    describe HOTP.__name, ->
+    describe "hotp", ->
         local hotp
         specs =
             [0]: 755224

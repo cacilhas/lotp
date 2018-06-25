@@ -1,10 +1,17 @@
 local *
 
-_G._TEST = true
-TOTP = assert require "otp.totp"
-import _test from TOTP
 
 describe "otp", ->
+    local TOTP, _test
+
+    setup ->
+        _G._TEST = true
+        TOTP = assert require "otp.totp"
+        _test = TOTP._test
+
+    teardown ->
+        _G._TEST = nil
+
     describe "_internals", ->
         specs =
             [{year: 1970, month: 1, day: 1, hour: 0, min: 0, sec: 59}]: 59
@@ -20,7 +27,7 @@ describe "otp", ->
                 it "should responde #{num} cicles for #{name}", ->
                     assert.are.equal (math.floor num / 30), _test.cicles 30, t
 
-    describe TOTP.__name, ->
+    describe "totp", ->
         local totp
         specs =
             [{year: 1970, month: 1, day: 1, hour: 0, min: 0, sec: 59}]: 94287082

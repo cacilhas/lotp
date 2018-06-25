@@ -1,15 +1,39 @@
 local *
 
-TOTP = assert require "otp.totp"
 
 describe "otp", ->
-    describe TOTP.__name, ->
+    local TOTP, _test
+
+    setup ->
+        _G._TEST = true
+        TOTP = assert require "otp.totp"
+        _test = TOTP._test
+
+    teardown ->
+        _G._TEST = nil
+
+    describe "_internals", ->
+        specs =
+            [{year: 1970, month: 1, day: 1, hour: 0, min: 0, sec: 59}]: 59
+            [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 29}]: 1111111109
+            [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 31}]: 1111111111
+            [{year: 2009, month: 2, day: 14, hour: 0, min: 31, sec: 30}]: 1234567890
+            [{year: 2033, month: 5, day: 18, hour: 3, min: 33, sec: 20}]: 2000000000
+            [{year: 2603, month: 10, day: 11, hour: 11, min: 33, sec: 20}]: 20000000000
+
+        describe "cicles", ->
+            for t, num in pairs specs
+                name = os.date "%Y-%m-%d %H:%M:%S", os.time t
+                it "should responde #{num} cicles for #{name}", ->
+                    assert.are.equal (math.floor num / 30), _test.cicles 30, t
+
+    describe "totp", ->
         local totp
         specs =
             [{year: 1970, month: 1, day: 1, hour: 0, min: 0, sec: 59}]: 94287082
             [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 29}]: 7081804
             [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 31}]: 14050471
-            --[{year: 2009, month: 2, day: 13, hour: 23, min: 31, sec: 30}]: 89005924
+            [{year: 2009, month: 2, day: 14, hour: 0, min: 31, sec: 30}]: 89005924
             [{year: 2033, month: 5, day: 18, hour: 3, min: 33, sec: 20}]: 69279037
             [{year: 2603, month: 10, day: 11, hour: 11, min: 33, sec: 20}]: 65353130
 

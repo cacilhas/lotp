@@ -1,7 +1,12 @@
 local *
 
-import cicles from assert require "otp.utils"
 HOTP = assert require "otp.hotp"
+
+epoch = os.time os.date "!*t", 0
+
+cicles = (interval, t) ->
+    t or= os.date "!*t"
+    math.floor ((os.time t) - epoch) / interval
 
 
 --------------------------------------------------------------------------------
@@ -24,3 +29,7 @@ class TOTP
         @hotp.length = @length if @length
         @hotp\password step
 
+
+with TOTP
+    -- For test purpose
+    ._test = :cicles if _TEST

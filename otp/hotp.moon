@@ -31,14 +31,25 @@ class HOTP
     length: 6
     currentstep: 0
 
+    --- :new(seed)
+    -- @param seed base32 string
+    -- @returns HOTP
     new: (seed) => @seed = seed
 
+    --- :digest(password, step?)
+    -- @param password number
+    -- @param step number or uint64_t
+    -- @returns boolean
     digest: (password, step) =>
         step or= @currentstep
         @currentstep = step + 1
         password == @\password step
 
+    --- :password(step?)
+    -- @param step number or uint64_t
+    -- @returns number
     password: (step) =>
+        step or= @currentstep
         phrase = (hmac @seed, step)
         -- Dynamic truncation
         dt = 2 * tonumber (phrase\sub -1), 16

@@ -1,5 +1,18 @@
 local *
 
+ffi = assert require"ffi", "require LuaJIT"
+
+
+tocnumber = (str) ->
+    res = ffi.new "uint8_t[?]", 8
+    i = 7
+    for char in str\gmatch ".."
+        res[i] = tonumber char, 16
+        i -= 1
+    p = ffi.cast "uint64_t*", res
+    p[0]
+
+
 hex = (str) ->
     str\gsub ".", => string.format "%02x", @\byte!
 
@@ -16,11 +29,15 @@ describe "otp", ->
             specs = {"0000000000000000"
                      "0000000000000001"
                      "0000000000000100"
-                     "a0ed26db964ee800"}
+                     "a0ed26db964ee800"
+                     "ffffffffffffffff"}
 
             for _, value in ipairs specs
                 it "should translate #{value}", ->
-                    assert.are.equal value, hex _test.itoa tonumber value, 16
+                    assert.are.equal value, hex _test.itoa tocnumber value
+
+            it "should support number", ->
+                assert.are.equal "0000000000000100", hex _test.itoa 256
 
         describe "hmac", ->
             key = "12345678901234567890"

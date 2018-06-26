@@ -6,7 +6,7 @@ sha1 = assert require"sha1",
     "missing: luarocks install sha1 # git@github.com:kikito/sha1.lua.git"
 
 
-itoa = (num) -> -- TODO: support string number
+itoa = (num) ->
     bnum = ffi.new "uint64_t[?]", 1
     bnum[0] = num
     p = ffi.cast "uint8_t*", bnum

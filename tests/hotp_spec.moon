@@ -1,5 +1,8 @@
 local *
 
+hex = (str) ->
+    str\gsub ".", => string.format "%02x", @\byte!
+
 
 describe "otp", ->
     local HOTP, _test
@@ -10,15 +13,14 @@ describe "otp", ->
 
     describe "_internals", ->
         describe "itoa", ->
-            specs =
-                ["0"]: "\0\0\0\0\0\0\0\0"
-                ["1"]: "\0\0\0\0\0\0\0\1"
-                ["256"]: "\0\0\0\0\0\0\1\0"
-                ["11595967340110342682"]: "\160\237&\219\150N\221\221"
+            specs = {"0000000000000000"
+                     "0000000000000001"
+                     "0000000000000100"
+                     "a0ed26db964ee800"}
 
-            for counter, cipher in pairs specs
-                it "should translate #{counter} to #{cipher}", ->
-                    assert.are.equal cipher, _test.itoa tonumber counter
+            for _, value in ipairs specs
+                it "should translate #{value}", ->
+                    assert.are.equal value, hex _test.itoa tonumber value, 16
 
         describe "hmac", ->
             key = "12345678901234567890"

@@ -1,12 +1,18 @@
 local *
 
+ffi = assert require"ffi", "require LuaJIT"
+import band from assert require"bit", "require LuaJIT"
 sha1 = assert require"sha1",
     "missing: luarocks install sha1 # git@github.com:kikito/sha1.lua.git"
-import band from assert require"bit", "require LuaJIT"
 
 
-itoa = (num) ->
-    table.concat [string.char band (math.floor num / (2^i)), 0xff for i = 56, 0, -8], ""
+itoa = (num) -> -- TODO: support string number
+    bnum = ffi.new "uint64_t[?]", 1
+    bnum[0] = num
+    p = ffi.cast "uint8_t*", bnum
+    buf = ffi.new "uint8_t[?]", 8
+    buf[7-i] = p[i] for i = 0, 7
+    ffi.string buf, 8
 
 
 hmac = (key, counter) ->

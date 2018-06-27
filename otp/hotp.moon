@@ -8,6 +8,7 @@ sha1 = assert require"sha1",
 
 hextou64 = (str) ->
     res = ffi.new "uint8_t[?]", 8
+    str = "0000000000000000#{str}"\sub -16
     i = 7
     for char in str\gmatch ".."
         res[i] = tonumber char, 16

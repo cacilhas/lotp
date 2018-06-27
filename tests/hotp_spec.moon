@@ -39,7 +39,7 @@ describe "otp", ->
                 assert.are.equal 0, tonumber data
 
             it "should return 256", ->
-                data = _test.hextou64 "0000000000000100"
+                data = _test.hextou64 "100"
                 assert.are.equal uint64_t, ffi.typeof data
                 assert.are.equal 256, tonumber data
 

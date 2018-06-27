@@ -26,7 +26,8 @@ describe "test helpers", ->
             assert.are.equal 256, tonumber tocnumber "0000000000000100"
 
         it "should deal with a0ed26db964ee800", ->
-            assert.are.equal 11595967340110342144, tonumber tocnumber "a0ed26db964ee800"
+            assert.are.equal 11595967340110342144,
+                             tonumber tocnumber "a0ed26db964ee800"
 
     describe "hex", ->
         it "should return zero", ->

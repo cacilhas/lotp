@@ -3,32 +3,11 @@ local *
 ffi = assert require"ffi", "require LuaJIT"
 
 
-tocnumber = (str) ->
-    res = ffi.new "uint8_t[?]", 8
-    i = 7
-    for char in str\gmatch ".."
-        res[i] = tonumber char, 16
-        i -= 1
-    p = ffi.cast "uint64_t*", res
-    p[0]
-
-
 hex = (str) ->
     str\gsub ".", => string.format "%02x", @\byte!
 
 
 describe "test helpers", ->
-    describe "tocnumber", ->
-        it "should return zero", ->
-            assert.are.equal 0, tonumber tocnumber "0000000000000000"
-
-        it "should return 256", ->
-            assert.are.equal 256, tonumber tocnumber "0000000000000100"
-
-        it "should deal with a0ed26db964ee800", ->
-            assert.are.equal 11595967340110342144,
-                             tonumber tocnumber "a0ed26db964ee800"
-
     describe "hex", ->
         it "should return zero", ->
             assert.are.equal "0000000000000000", hex "\0\0\0\0\0\0\0\0"
@@ -48,6 +27,27 @@ describe "otp", ->
         _test = otp._test.hotp
 
     describe "_internals", ->
+        describe "hextou64", ->
+            local uint64_t
+
+            setup ->
+                uint64_t = ffi.typeof "uint64_t"
+
+            it "should return zero", ->
+                data = _test.hextou64 "0000000000000000"
+                assert.are.equal uint64_t, ffi.typeof data
+                assert.are.equal 0, tonumber data
+
+            it "should return 256", ->
+                data = _test.hextou64 "0000000000000100"
+                assert.are.equal uint64_t, ffi.typeof data
+                assert.are.equal 256, tonumber data
+
+            it "should deal with a0ed26db964ee800", ->
+                data = _test.hextou64 "a0ed26db964ee800"
+                assert.are.equal uint64_t, ffi.typeof data
+                assert.are.equal 11595967340110342144, tonumber data
+
         describe "itoa", ->
             specs = {"0000000000000000"
                      "0000000000000001"
@@ -56,8 +56,11 @@ describe "otp", ->
                      "ffffffffffffffff"}
 
             for _, value in ipairs specs
-                it "should translate #{value}", ->
-                    assert.are.equal value, hex _test.itoa tocnumber value
+                it "should translate uint64_t #{value}", ->
+                    assert.are.equal value, hex _test.itoa _test.hextou64 value
+
+                it "should translate string #{value}", ->
+                    assert.are.equal value, hex _test.itoa value
 
             it "should support number", ->
                 assert.are.equal "0000000000000100", hex _test.itoa 256

@@ -6,7 +6,19 @@ sha1 = assert require"sha1",
     "missing: luarocks install sha1 # git@github.com:kikito/sha1.lua.git"
 
 
+hextou64 = (str) ->
+    res = ffi.new "uint8_t[?]", 8
+    str = "0000000000000000#{str}"\sub -16
+    i = 7
+    for char in str\gmatch ".."
+        res[i] = tonumber char, 16
+        i -= 1
+    p = ffi.cast "uint64_t*", res
+    p[0]
+
+
 itoa = (num) ->
+    num = hextou64 num if "string" == type num
     bnum = ffi.new "uint64_t[?]", 1
     bnum[0] = num
     p = ffi.cast "uint8_t*", bnum
@@ -23,7 +35,7 @@ if _TEST
     -- For test purpose
     _G.otp or= {}
     otp._test or= {}
-    otp._test.hotp = :hmac, :itoa
+    otp._test.hotp = :hextou64, :hmac, :itoa
 
 
 --------------------------------------------------------------------------------

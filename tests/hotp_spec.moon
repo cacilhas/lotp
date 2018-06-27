@@ -17,6 +17,28 @@ hex = (str) ->
     str\gsub ".", => string.format "%02x", @\byte!
 
 
+describe "test helpers", ->
+    describe "tocnumber", ->
+        it "should return zero", ->
+            assert.are.equal 0, tonumber tocnumber "0000000000000000"
+
+        it "should return 256", ->
+            assert.are.equal 256, tonumber tocnumber "0000000000000100"
+
+        it "should deal with a0ed26db964ee800", ->
+            assert.are.equal 11595967340110342144, tonumber tocnumber "a0ed26db964ee800"
+
+    describe "hex", ->
+        it "should return zero", ->
+            assert.are.equal "0000000000000000", hex "\0\0\0\0\0\0\0\0"
+
+        it "should return 256", ->
+            assert.are.equal "0000000000000100", hex "\0\0\0\0\0\0\1\0"
+
+        it "should deal with a0ed26db964ee800", ->
+            assert.are.equal "a0ed26db964ee800", hex "\160\237&\219\150N\232\0"
+
+
 describe "otp", ->
     local HOTP, _test
 

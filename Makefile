@@ -1,7 +1,6 @@
-MOON := moon
 MOONC := moonc
 BUSTED := env NO_MAKE=1 busted
-SHARE_DIR := $(shell $(MOON) find-lua-path.moon)
+SHARE_DIR := $(shell moon find-lua-path.moon)
 
 DEST= $(SHARE_DIR)/otp
 MD= mkdir -p

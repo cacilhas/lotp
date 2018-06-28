@@ -1,12 +1,12 @@
 local *
 
 
-describe "otp", ->
+describe "lotp", ->
     local TOTP, _test
 
     setup ->
-        TOTP = assert require "otp.totp"
-        _test = otp._test.totp
+        TOTP = assert require "lotp.totp"
+        _test = lotp._test.totp
 
     describe "_internals", ->
         specs =
@@ -22,6 +22,7 @@ describe "otp", ->
                 name = os.date "%Y-%m-%d %H:%M:%S", os.time t
                 it "should responde #{num} cicles for #{name}", ->
                     assert.are.equal (math.floor num / 30), _test.cicles 30, t
+
 
     describe "totp", ->
         local totp
@@ -66,3 +67,27 @@ describe "otp", ->
                 assert.is_true  totp\digest 14050471, t  -- 30s after
                 assert.is_false totp\digest 44266759, t  -- 1m after
 
+    describe "totp.basexx", ->
+        specs =
+            [{year: 1970, month: 1, day: 1, hour: 0, min: 0, sec: 59}]: 287082
+            [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 29}]: 81804
+            [{year: 2005, month: 3, day: 18, hour: 1, min: 58, sec: 31}]: 050471
+            [{year: 2009, month: 2, day: 14, hour: 0, min: 31, sec: 30}]: 005924
+            [{year: 2033, month: 5, day: 18, hour: 3, min: 33, sec: 20}]: 279037
+            [{year: 2603, month: 10, day: 11, hour: 11, min: 33, sec: 20}]: 353130
+
+        totps =
+            bit: TOTP.bit "ooiioooi ooiiooio ooiiooii ooiioioo ooiioioi " ..
+                          "ooiioiio ooiioiii ooiiiooo ooiiiooi ooiioooo " ..
+                          "ooiioooi ooiiooio ooiiooii ooiioioo ooiioioi " ..
+                          "ooiioiio ooiioiii ooiiiooo ooiiiooi ooiioooo", " "
+            hex: TOTP.hex "3132333435363738393031323334353637383930"
+            base32: TOTP.b32 "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
+            base64: TOTP.b64 "MTIzNDU2Nzg5MDEyMzQ1Njc4OTA="
+
+        describe "#password", ->
+            for totpname, totp in pairs totps
+                for t, code in pairs specs
+                    name = os.date "%Y-%m-%d %H:%M:%S", os.time t
+                    it "should #{totpname} responde #{code} for #{name}", ->
+                        assert.are.equal code, totp\password t

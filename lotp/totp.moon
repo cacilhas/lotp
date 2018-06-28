@@ -1,7 +1,9 @@
 local *
 
 ffi = assert require"ffi", "require LuaJIT"
-HOTP = assert require "otp.hotp"
+basexx = assert require"basexx",
+    "missing: luarocks install basexx # git@github.com:aiq/basexx.git"
+HOTP = assert require "lotp.hotp"
 
 uint64_t = ffi.typeof "uint64_t"
 epoch = uint64_t os.time os.date "!*t", 0
@@ -13,9 +15,9 @@ cicles = (interval, t) ->
 
 if _TEST
     -- For test purpose
-    _G.otp or= {}
-    otp._test or= {}
-    otp._test.totp = :cicles
+    _G.lotp or= {}
+    lotp._test or= {}
+    lotp._test.totp = :cicles
 
 
 --------------------------------------------------------------------------------
@@ -47,3 +49,11 @@ class TOTP
         step = cicles @interval, t
         @hotp.length = @length if @length
         @hotp\password step
+
+
+--------------------------------------------------------------------------------
+with TOTP
+    .bit = (...) -> TOTP basexx.from_bit ...
+    .hex = (...) -> TOTP basexx.from_hex ...
+    .b32 = (...) -> TOTP basexx.from_base32 ...
+    .b64 = (...) -> TOTP basexx.from_base64 ...

@@ -23,7 +23,7 @@ all: $(TARGET)
 
 
 install: $(TARGET)
-	tar --exclude "*.moon" otp | (cd $(SHARE_DIR) && tar -xvf -)
+	tar --exclude "*.moon" -cf- otp | (cd $(SHARE_DIR) && tar -xf -)
 
 
 uninstall:

@@ -1,6 +1,8 @@
 local *
 
 ffi = assert require"ffi", "require LuaJIT"
+basexx = assert require"basexx",
+    "missing: luarocks install basexx # git@github.com:aiq/basexx.git"
 HOTP = assert require "otp.hotp"
 
 uint64_t = ffi.typeof "uint64_t"
@@ -47,3 +49,11 @@ class TOTP
         step = cicles @interval, t
         @hotp.length = @length if @length
         @hotp\password step
+
+
+--------------------------------------------------------------------------------
+with TOTP
+    .bit = (...) -> TOTP basexx.from_bit ...
+    .hex = (...) -> TOTP basexx.from_hex ...
+    .b32 = (...) -> TOTP basexx.from_base32 ...
+    .b64 = (...) -> TOTP basexx.from_base64 ...

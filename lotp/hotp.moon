@@ -33,9 +33,9 @@ hmac = (key, counter) ->
 
 if _TEST
     -- For test purpose
-    _G.otp or= {}
-    otp._test or= {}
-    otp._test.hotp = :hextou64, :hmac, :itoa
+    _G.lotp or= {}
+    lotp._test or= {}
+    lotp._test.hotp = :hextou64, :hmac, :itoa
 
 
 --------------------------------------------------------------------------------

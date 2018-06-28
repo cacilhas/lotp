@@ -19,12 +19,12 @@ describe "test helpers", ->
             assert.are.equal "a0ed26db964ee800", hex "\160\237&\219\150N\232\0"
 
 
-describe "otp", ->
+describe "lotp", ->
     local HOTP, _test
 
     setup ->
-        HOTP = assert require "otp.hotp"
-        _test = otp._test.hotp
+        HOTP = assert require "lotp.hotp"
+        _test = lotp._test.hotp
 
     describe "_internals", ->
         describe "hextou64", ->

@@ -1,12 +1,12 @@
 local *
 
 
-describe "otp", ->
+describe "lotp", ->
     local TOTP, _test
 
     setup ->
-        TOTP = assert require "otp.totp"
-        _test = otp._test.totp
+        TOTP = assert require "lotp.totp"
+        _test = lotp._test.totp
 
     describe "_internals", ->
         specs =

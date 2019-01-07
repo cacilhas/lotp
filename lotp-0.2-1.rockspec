@@ -1,12 +1,12 @@
 package = "LOTP"
 version = "0.2-1"
 source = {
-  url = "https://bitbucket.org/cacilhas/lotp/src/",
+  url = "https://github.com/cacilhas/lotp",
 }
 description = {
   summary = "LuaOTP – HOTP and TOTP support",
   detailed = "",
-  homepage = "https://bitbucket.org/cacilhas/lotp",
+  homepage = "https://github.com/cacilhas/lotp",
   license = "BSD-3 Clausule",
 }
 dependencies = {
